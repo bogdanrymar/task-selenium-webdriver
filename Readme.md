@@ -1,0 +1,1 @@
+My name is Rymar Bohdan. I have created this project to solve the task in the final assessment of Test Automation in Java. 
