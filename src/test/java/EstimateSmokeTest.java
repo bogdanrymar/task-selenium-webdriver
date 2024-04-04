@@ -22,12 +22,20 @@ public class EstimateSmokeTest {
     public void flow() {
         //Get temporary email
         EmailPage emailPage = new EmailPage();
+        String mailTab = WebDriverManager.getCurrentHandle();
+
         String email = emailPage
                 .open()
                 .getTempEmail();
 
+        //Switch to a new tab
+        WebDriverManager.newTab();
+
         //Fill the calculator form and send an email
         String totalSum = calculateEstimateAndSendTo(email);
+
+        //Switch back to the mail tab
+        WebDriverManager.switchTab(mailTab);
 
         //Ensure emailed calculated sum is the same
         String emailSum = emailPage.getTotalSumMailed();
