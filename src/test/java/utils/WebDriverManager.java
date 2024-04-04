@@ -1,9 +1,9 @@
 package utils;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -35,12 +35,19 @@ public class WebDriverManager {
     }
 
 
-    public static void newTab() {
-        getBody().sendKeys(Keys.CONTROL, "t");
+    public static String getCurrentHandle() {
+        return instance.getWindowHandle();
     }
 
-    public static void switchTab() {
-        getBody().sendKeys(Keys.CONTROL, Keys.TAB);
+    public static String newTab() {
+        instance.switchTo().newWindow(WindowType.TAB);
+        return instance.getWindowHandle();
+    }
+
+    public static void switchTab(String handle) {
+        System.out.println(instance.getWindowHandles());
+
+        instance.switchTo().window(handle);
     }
 
     private static WebElement getBody() {
