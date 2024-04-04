@@ -3,7 +3,7 @@ import model.HomePage;
 import model.PricingCalculatorPage;
 import model.SearchResultsPage;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import utils.WebDriverManager;
 
@@ -76,7 +76,7 @@ public class EstimateFullTest {
     }
 
 
-    @AfterTest
+    @AfterClass
     public void finish() {
         WebDriverManager.quit();
     }

@@ -45,8 +45,6 @@ public class WebDriverManager {
     }
 
     public static void switchTab(String handle) {
-        System.out.println(instance.getWindowHandles());
-
         instance.switchTo().window(handle);
     }
 

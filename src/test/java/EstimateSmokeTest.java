@@ -1,7 +1,7 @@
 import model.EmailPage;
 import model.PricingCalculatorPage;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import utils.WebDriverManager;
 
@@ -57,7 +57,7 @@ public class EstimateSmokeTest {
     }
 
 
-    @AfterTest
+    @AfterClass
     public void finish() {
         WebDriverManager.quit();
     }
