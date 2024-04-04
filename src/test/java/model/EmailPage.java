@@ -1,15 +1,10 @@
 package model;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class EmailPage extends AbstractPage {
     private static final String URL = "https://yopmail.com/uk/email-generator";
-
-    public EmailPage(WebDriver driver) {
-        super(driver);
-    }
 
 
     public EmailPage open() {

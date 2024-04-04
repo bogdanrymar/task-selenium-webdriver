@@ -1,61 +1,56 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
+import model.EmailPage;
+import model.PricingCalculatorPage;
 import org.testng.Assert;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
-import model.*;
-import utils.Properties;
-import utils.ScreenShot;
+import utils.WebDriverManager;
 
 public class EstimateSmokeTest {
     @Test
-    @Parameters("browser")
-    public void test(String browser) {
-            WebDriverManager mailDriver = Properties.getBrowserManager(browser);
-            WebDriverManager formDriver = Properties.getBrowserManager(browser);
-
-            try {
-                flow(mailDriver, formDriver);
-            }
-            catch (Exception|Error e) {
-                System.out.println("creating screenshots");
-                ScreenShot.takeScreenShot(formDriver.getWebDriver());
-                ScreenShot.takeScreenShot(mailDriver.getWebDriver());
-                throw new RuntimeException(e);
-            }
-            formDriver.quit();
-            mailDriver.quit();
+    public void test() {
+        try {
+            flow();
+        } catch (Throwable e) {
+            System.out.println("creating screenshots");
+            //ScreenShot.takeScreenShot(formDriver.getWebDriver());
+            //ScreenShot.takeScreenShot(mailDriver.getWebDriver());
+            throw new RuntimeException(e);
+        }
     }
 
 
-    public void flow(WebDriverManager mailDriver, WebDriverManager formDriver) {
+    public void flow() {
         //Get temporary email
-        EmailPage emailPage = new EmailPage(mailDriver.create());
+        EmailPage emailPage = new EmailPage();
         String email = emailPage
                 .open()
                 .getTempEmail();
 
-
         //Fill the calculator form and send an email
-        String totalSum = calculateEstimateAndSendToEmail(formDriver.create(), email);
+        String totalSum = calculateEstimateAndSendTo(email);
 
         //Ensure emailed calculated sum is the same
         String emailSum = emailPage.getTotalSumMailed();
         Assert.assertEquals(totalSum, emailSum);
     }
 
-    public static String calculateEstimateAndSendToEmail(WebDriver driver, String email) {
-        PricingCalculatorPage pricingCalculatorPage = new PricingCalculatorPage(driver);
+    public static String calculateEstimateAndSendTo(String email) {
+        PricingCalculatorPage pricingCalculatorPage = new PricingCalculatorPage();
 
-        String totalSum = pricingCalculatorPage
+        pricingCalculatorPage
                 .open()
                 .enterFormFrame()
                 .switchToComputeEngineTab()
                 .enterNumberOfInstances(4)
                 .submitForm()
-                .sendToEmail(email)
-                .getTotalSum();
+                .sendToEmail(email);
 
-        return totalSum;
+        return pricingCalculatorPage.getTotalSum();
+    }
+
+
+    @AfterTest
+    public void finish() {
+        WebDriverManager.quit();
     }
 }

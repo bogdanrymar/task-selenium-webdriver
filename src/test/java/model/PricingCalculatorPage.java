@@ -1,7 +1,6 @@
 package model;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.regex.Matcher;
@@ -13,10 +12,6 @@ public class PricingCalculatorPage extends AbstractPage {
     private static final String URL = "https://cloud.google.com/products/calculator-legacy";
     private static final String REGEX_TOTAL_SUM = ".*: (.+) p.*";
 
-
-    public PricingCalculatorPage(WebDriver driver) {
-        super(driver);
-    }
 
     public PricingCalculatorPage open() {
         driver.get(URL);
