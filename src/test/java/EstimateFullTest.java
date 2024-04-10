@@ -1,60 +1,18 @@
-import model.EmailPage;
-import model.HomePage;
-import model.PricingCalculatorPage;
 import model.SearchResultsPage;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.Test;
-import utils.WebDriverManager;
+import model.PricingCalculatorPage;
 
-public class EstimateFullTest {
-    @Test
-    public void test() {
-        try {
-            flow();
-        } catch (Throwable e) {
-            System.out.println("creating screenshots");
-            //ScreenShot.takeScreenShot(formDriver.getWebDriver());
-            //ScreenShot.takeScreenShot(mailDriver.getWebDriver());
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    public void flow() {
-        //Get temporary email
-        EmailPage emailPage = new EmailPage();
-        String mailTab = WebDriverManager.getCurrentHandle();
-
-        String email = emailPage
-                .open()
-                .getTempEmail();
-
-        //Switch to a new tab
-        WebDriverManager.newTab();
-
-        //Fill the calculator form and send an email
-        String totalSum = calculateEstimateAndSendTo(email);
-
-        //Switch back to the mail tab
-        WebDriverManager.switchTab(mailTab);
-
-        //Ensure emailed calculated sum is the same
-        String emailSum = emailPage.getTotalSumMailed();
-        Assert.assertEquals(totalSum, emailSum);
-    }
-
-    public static String calculateEstimateAndSendTo(String email) {
-        HomePage homePage = new HomePage();
+public class EstimateFullTest extends EstimateBaseTest {
+    @Override
+    protected String calculateEstimateAndSendTo(String email) {
+        SearchResultsPage homePage = new SearchResultsPage();
 
         SearchResultsPage searchResultsPage = homePage
-                .open()
-                .search("Google Cloud Platform Pricing Calculator");
+                .open();
 
         PricingCalculatorPage pricingCalculatorPage = searchResultsPage
                 .clickOnSearchItem("//*[@track-metadata-eventdetail='cloud.google.com/products/calculator-legacy']");
 
-        pricingCalculatorPage
+        return pricingCalculatorPage
                 .enterFormFrame()
                 .switchToComputeEngineTab()
                 .enterNumberOfInstances(4)
@@ -70,14 +28,9 @@ public class EstimateFullTest {
                 .chooseEurope3Location()
                 .choose1YearUsage()
                 .submitForm()
-                .sendToEmail(email);
-
-        return pricingCalculatorPage.getTotalSum();
-    }
-
-
-    @AfterClass
-    public void finish() {
-        WebDriverManager.quit();
+                .sendToEmail(email)
+                .getTotalSum();
     }
 }
+
+

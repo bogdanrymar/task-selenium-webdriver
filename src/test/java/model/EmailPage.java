@@ -2,6 +2,10 @@ package model;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class EmailPage extends AbstractPage {
     private static final String URL = "https://yopmail.com/uk/email-generator";
@@ -18,17 +22,13 @@ public class EmailPage extends AbstractPage {
     }
 
     public String getTotalSumMailed() {
-        delay(5);
-
-        WebElement checkButton = driver.findElement(By.xpath("//main//div[2]//button[2]"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement checkButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("//main//div[2]//button[2]")));
         checkButton.click();
-
-        delay(1);
 
         WebElement frame2 = driver.findElement(By.id("ifmail"));
         driver.switchTo().frame(frame2);
 
-        delay(5);
 
         WebElement checkSum = driver.findElement(By.xpath("//*[@id=\"mail\"]//tr[2]/td[2]/h3"));
         return checkSum.getText();
