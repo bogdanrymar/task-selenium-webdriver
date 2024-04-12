@@ -65,11 +65,11 @@ public class PricingCalculatorPage extends AbstractPage {
     }
 
     public PricingCalculatorPage chooseRegularProvisioningModel() {
-        WebElement provisioningModel = driver.findElement(By.id("select_value_label_93"));
+        WebElement provisioningModel = driver.findElement(By.id("select_117"));
         provisioningModel.click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement regular = wait.until(ExpectedConditions.elementToBeClickable(By.id("select_value_label_93")));
+        WebElement regular = wait.until(ExpectedConditions.elementToBeClickable(By.id("select_option_115")));
         regular.click();
 
         return this;
